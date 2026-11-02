@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { minutaDelDia, PRIMER_LUNES_CON_DATOS, ULTIMO_LUNES_PUBLICADO } from "@/data/minuta";
-import { reservaDelDia, reservas } from "@/data/reservas";
+import { reservaDelDia, useReservas } from "@/data/reservas";
 import { Ayuda } from "@/shared/Ayuda";
 import { EncabezadoPantalla } from "@/shared/EncabezadoPantalla";
 import { BotonReintentar, EstadoMensaje } from "@/shared/Estados";
@@ -21,12 +21,13 @@ const ayuda = [
 ];
 
 export function MinutaPage({ dia, demo }: { dia?: string; demo?: "error" }) {
+  const reservas = useReservas();
   const navigate = useNavigate({ from: "/minuta" });
   const [error, setError] = useState(demo === "error");
   const seleccionado = dia ?? HOY;
   const lunes = lunesDe(seleccionado);
   const dias = useMemo(() => [0, 1, 2, 3, 4].map((i) => sumarDias(lunes, i)), [lunes]);
-  const reservados = useMemo(() => new Set(reservas.filter((r) => r.estado === "Confirmada").map((r) => r.fecha)), []);
+  const reservados = useMemo(() => new Set(reservas.filter((r) => r.estado === "Confirmada").map((r) => r.fecha)), [reservas]);
   const cargando = useCargaSimulada(seleccionado + String(error));
 
   const minuta = minutaDelDia(seleccionado);

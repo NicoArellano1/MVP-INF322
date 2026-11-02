@@ -2,12 +2,12 @@ import { useNavigate } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { minutaDelDia } from "@/data/minuta";
-import type { Reserva } from "@/data/reservas";
+import { puedeCancelar, type Reserva } from "@/data/reservas";
 import { clp, fechaLarga } from "@/shared/fecha";
 import { EtiquetaEstado } from "./TarjetaReserva";
 
 /** Panel Modal con Balance Diagonal: título arriba-izquierda, acción principal abajo-derecha. Máx. 2 botones. */
-export function DetalleReserva({ reserva, onCerrar }: { reserva?: Reserva; onCerrar: () => void }) {
+export function DetalleReserva({ reserva, onCerrar, onCancelar }: { reserva?: Reserva; onCerrar: () => void; onCancelar?: (r: Reserva) => void }) {
   const navigate = useNavigate();
   const minuta = reserva ? minutaDelDia(reserva.fecha) : undefined;
 
@@ -49,7 +49,9 @@ export function DetalleReserva({ reserva, onCerrar }: { reserva?: Reserva; onCer
               <p className="text-sm text-muted-foreground">Muestra el código en la caja del casino para retirar tu almuerzo.</p>
             )}
 
-            <DialogFooter className="gap-2 sm:justify-end">
+            {reserva.estado === "Cancelada" && <p className="text-sm text-muted-foreground">Esta reserva fue anulada y su código ya no es válido para retirar el almuerzo.</p>}
+
+            <DialogFooter className="flex-wrap gap-2 sm:justify-end">
               <Button variant="outline" size="lg" onClick={onCerrar}>
                 Cerrar
               </Button>
@@ -58,6 +60,7 @@ export function DetalleReserva({ reserva, onCerrar }: { reserva?: Reserva; onCer
                   Ver minuta de ese día
                 </Button>
               )}
+              {puedeCancelar(reserva) && onCancelar && <Button variant="destructive" onClick={() => onCancelar(reserva)}>Cancelar día</Button>}
             </DialogFooter>
           </>
         )}

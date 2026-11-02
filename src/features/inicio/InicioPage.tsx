@@ -3,10 +3,11 @@ import { ChevronRight } from "lucide-react";
 import { usuario } from "@/data/usuario";
 import { fechaLarga, HOY } from "@/shared/fecha";
 import { HORARIO_ALMUERZO } from "@/data/minuta";
-import { puntosEntrada } from "./puntosEntrada";
+import { usePuntosEntrada } from "./puntosEntrada";
 
 /** Concentrador (Hub and Spoke): el Inicio solo ofrece los puntos de entrada a cada meta. */
 export function InicioPage() {
+  const puntosEntrada = usePuntosEntrada();
   const nombre = usuario.nombre.split(" ")[0];
   return (
     <div className="mx-auto max-w-xl">
