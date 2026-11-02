@@ -3,4 +3,5 @@
 
 ## Integrantes
 - Nicolás Arellano - 202373639-2
-- Carlos Bravo - rol
+- Carlos Bravo - 202373531-0
+  
